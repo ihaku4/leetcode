@@ -1,23 +1,24 @@
 class MinStack:
     def __init__(self):
         self.stack = []
-        self.sorted = []
+        self.min = []
 
     # @param x, an integer
     # @return an integer
     def push(self, x):
         self.stack.append(x)
-        pos = binary_insert(self.sorted, x)
-        self.sorted = self.sorted[:pos] + [x] + self.sorted[pos:]
+        if len(self.min) == 0 or \
+           self.stack[self.min[-1]] > x:
+            self.min.append(len(self.stack) - 1)
         return x
 
     # @return nothing
     def pop(self):
         if len(self.stack) == 0:
             return
-        x = self.stack.pop()
-        pos = binary_search(self.sorted, x)
-        self.sorted = self.sorted[:pos] + self.sorted[pos + 1:]
+        self.stack.pop()
+        if self.min[-1] == len(self.stack):
+            self.min.pop()
 
     # @return an integer
     def top(self):
@@ -30,7 +31,7 @@ class MinStack:
     def getMin(self):
         if len(self.stack) == 0:
             return None
-        return self.sorted[0]
+        return self.stack[self.min[-1]]
 
 
 def binary_search(arr, target):
