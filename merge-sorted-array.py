@@ -6,21 +6,44 @@ class Solution:
     # @return nothing
     def merge(self, A, m, B, n):
         ia = ib = 0
-        while ia < m and ib < n:
-            if A[ia + ib] <= B[ib]:
-                ia = ia + 1
-                continue
-            else:
-                off = 1
-                while ib + off < n and A[ia + ib] > B[ib + off]:
-                    off = off + 1
-                self.shift(A, m + ib, ia + ib, off)
-                for i in range(off):
-                    A[ia + ib + i] = B[ib + i]
-                ib = ib + off
+        while ia < m + ib and ib < n:
+            ia = self.binary_search(A, ia, m + ib - 1, B[ib])
+            if ia >= m + ib:
+                break
+
+            off = 1
+            while ib + off < n and A[ia] > B[ib + off]:
+                off = off + 1
+
+            self.shift(A, m + ib, ia, off)
+            for i in range(off):
+                A[ia + i] = B[ib + i]
+
+            ia = ia + off
+            ib = ib + off
         if ib < n:
-            for i in range(ib, n):
-                A[ia + i] = B[i]
+            for i in range(n - ib):
+                A[ia + i] = B[i + ib]
+
+    def binary_search(self, arr, start, end, target):
+        while start <= end:
+            mid = (start + end) / 2
+            if mid == start:
+                if target <= arr[start]:
+                    return start
+                elif target > arr[start] and target <= arr[end]:
+                    return start + 1
+                elif target > arr[end]:
+                    return end + 1
+
+            if arr[mid] <= target and arr[mid + 1] > target:
+                return mid + 1
+            elif arr[mid] <= target and arr[mid + 1] <= target:
+                start = mid + 1
+                continue
+            elif arr[mid] > target and arr[mid + 1] > target:
+                end = mid
+                continue
 
     def shift(self, arr, length, start, off=1):
         r = range(start, length)
@@ -43,6 +66,7 @@ if __name__ == '__main__':
     print A, B
     s.merge(A, 4, B, 6)
     print A, B
+
     A = [1, 2, 3]
     B = [2, 5, 6]
     A.extend([0, 0, 0])
