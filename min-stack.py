@@ -2,7 +2,6 @@ class MinStack:
     def __init__(self):
         self.stack = []
         self.min = []
-        self.min_value = None
 
     # @param x, an integer
     # @return an integer
@@ -11,7 +10,6 @@ class MinStack:
         if len(self.min) == 0 or \
            self.stack[self.min[-1]] > x:
             self.min.append(len(self.stack) - 1)
-            self.min_value = x
         return x
 
     # @return nothing
@@ -21,10 +19,6 @@ class MinStack:
         self.stack.pop()
         if self.min[-1] == len(self.stack):
             self.min.pop()
-            if len(self.min) == 0:
-                self.min_value = None
-            else:
-                self.min_value = self.stack[self.min[-1]]
 
     # @return an integer
     def top(self):
@@ -37,7 +31,7 @@ class MinStack:
     def getMin(self):
         if len(self.stack) == 0:
             return None
-        return self.min_value
+        return self.stack[self.min[-1]]
 
 
 def binary_search(arr, target):
