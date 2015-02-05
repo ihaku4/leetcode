@@ -5,6 +5,7 @@ class Solution:
     INT_MAX = 0x7fffffff
     INT_MIN = -INT_MAX - 1
     INVALID = 0
+
     map = {}
     for i in '0123456789':
         map[i] = ord(i) - ord('0')
@@ -67,67 +68,21 @@ class Solution:
             return func(self, str, base)
         return wrapper
 
-    # integer literal types:
-    #
-    #   1. 0xffff, 0Xffff, 0xFFFF, 0XFFFF, 0xffFf, 0x000f
-    #   2. 0777, 000777
-    #   3. 999
-    #   4. 999.12, 1.0
-    #   5. 0.12, 0000.12, 00001.12
-    #   6. 0b1110, 0B1100, 0b000001
-    #   7. 2E12 ?, 2e+12, 2e-12
-    #   8. 0F, 0f, 0U, 0u, 0L, 0UL, 0LL
-
-    # 2. upper / lower case
-    # 1. base: 0x, 0b, 0, decimal
-    # 4. science notation: 1.23e+12
-    # 3. trim head 0s, tail 0s
-    # @return an integer
-
     @not_empty
     @overflow_check
     @mark_parse
     def atoi(self, str, base=10):
         num = None
         str = str.upper()
-        # if str.count('E') > 0 and not str.startswith('0X'):
-        #     pass
-        #     num = self.parse_scientific_notation(str)
-        # elif str.count('.') > 0:
-        #     pass
-        #     num = self.parse_dot_float(str)
-        # else:
         if str.startswith('0X'):
             num = self.parse_integer(str[2:], base=16)
         elif str.startswith('0B'):
             num = self.parse_integer(str[2:], base=2)
-        elif str.startswith('0'):
-            num = self.parse_integer(str[1:], base=8)
         else:
             num = self.parse_integer(str, base=10)
         return num
 
-    def parse_scientific_notation(self, str):
-        head, tail = str.split('E')
-        if head.count('.') > 0:
-            num = self.parse_dot_float(head)
-        else:
-            num = self.parse_integer(head)
-        e = self.parse_integer(tail)
-        size = 1.0
-        if e < 0:
-            i = e
-            while i < 0:
-                size /= 10
-                i += 1
-        else:
-            i = 0
-            while i < e:
-                size *= 10
-                i += 1
-        return num * size
-
-    @mark_parse
+    # @mark_parse
     @validate
     def parse_integer(self, str, base=10):
         str = str.lstrip('0')
@@ -139,25 +94,6 @@ class Solution:
             if i not in Solution.map:
                 break
             num += Solution.map[i] * size
-            size *= base
-        return num
-
-    @mark_parse
-    @validate
-    def parse_dot_float(self, str, base=10):
-        sp = str.split('.', 1)
-        head = sp[0]
-        num = self.parse_integer(head)
-        if len(sp) == 1:
-            return num
-        tail = sp[1].rstrip('0')
-        if len(tail) == 0:
-            return num + 0.0
-        size = base * 1.0
-        for i in tail:
-            if i not in Solution.map:
-                break
-            num += Solution.map[i] / size
             size *= base
         return num
 
@@ -240,7 +176,7 @@ class Test(unittest.TestCase):
         self.assertEqual(self.s.atoi('-0b11101'), -0b11101)
         self.assertEqual(self.s.atoi('-0b111010000'), -0b111010000)
 
-    def test_oct_int(self):
+    def _test_oct_int(self):
         self.assertEqual(self.s.atoi('01'), 01)
         self.assertEqual(self.s.atoi('001'), 001)
         self.assertEqual(self.s.atoi('011101'), 011101)
