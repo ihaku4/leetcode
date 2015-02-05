@@ -72,6 +72,8 @@ class Solution:
         for i in str:
             if i not in Solution.map:
                 break
+            if num > Solution.INT_MAX:
+                return num
             num *= base
             num += Solution.map[i]
         return num
