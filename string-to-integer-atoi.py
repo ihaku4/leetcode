@@ -6,11 +6,18 @@ class Solution:
     INT_MIN = -INT_MAX - 1
     INVALID = 0
 
-    map = {}
-    for i in '0123456789':
-        map[i] = ord(i) - ord('0')
-    for i in 'ABCDEF':
-        map[i] = ord(i) - ord('A') + 10
+    map = {
+        '0': 0,
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6,
+        '7': 7,
+        '8': 8,
+        '9': 9,
+        }
 
     def overflow_check(func):
         # @functools.wraps(func)
@@ -49,52 +56,24 @@ class Solution:
             return func(self, str, base)
         return wrapper
 
-    def validate(func):
-        def wrapper(self, str, base=10):
-            not_valid = {
-                2: lambda c: c not in '01',
-                8: lambda c: c not in '01234567',
-                # 10: lambda c: c not in '.0123456789',
-                10: lambda c: c not in '0123456789',
-                16: lambda c: c not in '0123456789ABCDEF',
-                }
-            for i in range(len(str)):
-                if not_valid[base](str[i]):
-                    if i == 0:
-                        return Solution.INVALID
-                    else:
-                        str = str[0:i]
-                        break
-            return func(self, str, base)
-        return wrapper
-
     @not_empty
     @overflow_check
     @mark_parse
     def atoi(self, str, base=10):
-        num = None
-        str = str.upper()
-        if str.startswith('0X'):
-            num = self.parse_integer(str[2:], base=16)
-        elif str.startswith('0B'):
-            num = self.parse_integer(str[2:], base=2)
-        else:
-            num = self.parse_integer(str, base=10)
-        return num
+        return self.parse_integer(str, base=10)
 
     # @mark_parse
-    @validate
+    # @validate
     def parse_integer(self, str, base=10):
         str = str.lstrip('0')
         if len(str) == 0:
             return 0
         num = 0
-        size = 1
-        for i in str[::-1]:
+        for i in str:
             if i not in Solution.map:
                 break
-            num += Solution.map[i] * size
-            size *= base
+            num *= base
+            num += Solution.map[i]
         return num
 
 import unittest
@@ -158,7 +137,7 @@ class Test(unittest.TestCase):
         print self.s.atoi('12.0', base=16)
         print self.s.parse_integer('-F', base=16)
 
-    def test_hex_int(self):
+    def _test_hex_int(self):
         self.assertEqual(self.s.atoi('0x12'), 0x12)
         self.assertEqual(self.s.atoi('0x1f'), 0x1f)
         self.assertEqual(self.s.atoi('-0x1f'), -0x1f)
@@ -166,7 +145,7 @@ class Test(unittest.TestCase):
         self.assertEqual(self.s.atoi('-0x1fffffff'), -0x1fffffff)
         self.assertEqual(self.s.atoi('-0x1ffffffa'), -0x1ffffffa)
 
-    def test_binary_int(self):
+    def _test_binary_int(self):
         self.assertEqual(self.s.atoi('0b1'), 0b1)
         self.assertEqual(self.s.atoi('0b01'), 0b01)
         self.assertEqual(self.s.atoi('0b11101'), 0b11101)
@@ -206,10 +185,10 @@ class Test(unittest.TestCase):
         self.assertEqual(self.s.atoi('  123k23fsd  '), 123)
         # self.assertEqual(self.s.atoi('  12.3k23fsd  '), 12.3)
         self.assertEqual(self.s.atoi('  111k2.3k23fsd  '), 111)
-        self.assertEqual(self.s.atoi('0x7fffffff'), 0x7fffffff)
-        self.assertEqual(self.s.atoi('-0x80000000'), -0x80000000)
-        self.assertEqual(self.s.atoi('0x80000000'), 0x7fffffff)
-        self.assertEqual(self.s.atoi('-0x80000001'), -0x80000000)
+        # self.assertEqual(self.s.atoi('0x7fffffff'), 0x7fffffff)
+        # self.assertEqual(self.s.atoi('-0x80000000'), -0x80000000)
+        # self.assertEqual(self.s.atoi('0x80000000'), 0x7fffffff)
+        # self.assertEqual(self.s.atoi('-0x80000001'), -0x80000000)
 
 
 unittest.main()
