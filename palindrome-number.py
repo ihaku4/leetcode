@@ -5,18 +5,27 @@ class Solution:
             return False
         elif x < 10:
             return True
+
         div = 10
+        length = 1
         while x / div > 0:
             div *= 10
-        head_div = div
-        tail_div = 10
-        while head_div > tail_div:
-            h = (x % head_div) / (head_div / 10)
-            t = (x % tail_div) / (tail_div / 10)
+            length += 1
+
+        head = x
+        tail = x
+        count = length / 2
+        div /= 10
+        while count > 0:
+            h = head / div
+            t = tail % 10
             if h != t:
                 return False
-            head_div /= 10
-            tail_div *= 10
+
+            head %= div
+            div /= 10
+            tail /= 10
+            count -= 1
         return True
 
 import unittest
