@@ -56,11 +56,38 @@ class Solution:
             return func(self, str, base)
         return wrapper
 
-    @not_empty
-    @overflow_check
-    @mark_parse
+    # @not_empty
+    # @overflow_check
+    # @mark_parse
     def atoi(self, str, base=10):
-        return self.parse_integer(str, base=10)
+        str = str.strip()
+        if len(str) == 0:
+            return Solution.INVALID
+
+        positive = True
+        if str[0] == '-':
+            positive = False
+            str = str[1:]
+        elif str[0] == '+':
+            str = str[1:]
+
+        str = str.lstrip('0')
+        if len(str) == 0:
+            return 0
+
+        num = 0
+        for i in str:
+            if i not in Solution.map:
+                break
+            num *= base
+            num += Solution.map[i]
+            if num >= Solution.INT_MAX:
+                if positive:
+                    return Solution.INT_MAX
+                elif num >= -Solution.INT_MIN:
+                    return Solution.INT_MIN
+
+        return num if positive else -num
 
     # @mark_parse
     # @validate
@@ -191,6 +218,10 @@ class Test(unittest.TestCase):
         # self.assertEqual(self.s.atoi('-0x80000000'), -0x80000000)
         # self.assertEqual(self.s.atoi('0x80000000'), 0x7fffffff)
         # self.assertEqual(self.s.atoi('-0x80000001'), -0x80000000)
+        self.assertEqual(self.s.atoi('2147483647'), 0x7fffffff)
+        self.assertEqual(self.s.atoi('-2147483648'), -0x80000000)
+        self.assertEqual(self.s.atoi('2147483648'), 0x7fffffff)
+        self.assertEqual(self.s.atoi('-2147483649'), -0x80000000)
 
 
 unittest.main()

@@ -11,16 +11,28 @@ class Solution:
     def getIntersectionNode(self, headA, headB):
         if headA is None or headB is None:
             return None
-        setA = set([headA])
-        setB = set([headB])
-        while headA.next is not None or headB.next is not None:
-            if headA.next is not None:
-                setA.add(headA.next)
-                headA = headA.next
-            if headB.next is not None:
-                setB.add(headB.next)
-                headB = headB.next
-            inter = setA.intersection(setB)  # XXX
-            if len(inter) != 0:
-                return inter.pop()
-        return None
+
+        countA = countB = 0
+        headACp = headA
+        while headACp is not None:
+            countA += 1
+            headACp = headACp.next
+        headBCp = headB
+        while headBCp is not None:
+            countB += 1
+            headBCp = headBCp.next
+
+        headACp = headA
+        headBCp = headB
+        if countA > countB:
+            for i in range(countA - countB):
+                headACp = headACp.next
+        elif countB > countA:
+            for i in range(countB - countA):
+                headBCp = headBCp.next
+
+        while headACp != headBCp and headACp is not None:
+            headACp = headACp.next
+            headBCp = headBCp.next
+
+        return headACp
