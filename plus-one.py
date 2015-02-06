@@ -1,13 +1,24 @@
 class Solution:
+    map = {
+        0: 1,
+        1: 2,
+        2: 3,
+        3: 4,
+        4: 5,
+        5: 6,
+        6: 7,
+        7: 8,
+        8: 9,
+        9: 0,
+        }
+
     # @param digits, a list of integer digits
     # @return a list of integer digits
     def plusOne(self, digits):
         i = len(digits) - 1
         while i >= 0:
-            if digits[i] == 9:
-                digits[i] = 0
-            else:
-                digits[i] += 1
+            digits[i] = Solution.map[digits[i]]
+            if digits[i] != 0:
                 break
             i -= 1
         if i < 0:
