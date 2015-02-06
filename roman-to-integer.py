@@ -41,6 +41,7 @@ class Test(unittest.TestCase):
         for key in Test.map:
             self.assertEqual(Test.map[key], self.s.romanToInt(key))
 
+    # data from: http://literacy.kent.edu/Minigrants/Cinci/romanchart.htm
     map = {
         'I': 1,
         'XXXII': 32,
