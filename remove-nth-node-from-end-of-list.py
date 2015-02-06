@@ -11,7 +11,7 @@ class Solution:
         target = head
         i = head
         while n > 0:
-            i = head.next
+            i = i.next
             n -= 1
         if i is None:
             return head.next
