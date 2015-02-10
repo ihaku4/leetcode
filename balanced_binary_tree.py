@@ -33,10 +33,13 @@ from binary_tree_printer import BinaryTreePrinter
 # tree = BinaryTree('{1, #, 2, #, 3}')
 # tree = BinaryTree('{1,#,2,#,3}')
 serial = '{1,2,2,3,3,3,3,4,4,4,4,4,4,#,#,5,5} '
+serial = '{1111111111111,2,2,3,3333333,3,3,4,44444444444,44,4444,4,4,#,#,5,5} '
 serial = '{1, #, 2, #, 3}'
 tree = BinaryTree(serial)
 root = tree.deserialize()
 print Solution().isBalanced(root)
 printer = BinaryTreePrinter()
+printer.printStructureLine = False
+printer.printStructureLine = True
 printer.printTree(root)
 print serial
