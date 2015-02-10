@@ -3,46 +3,141 @@ import sys
 
 class BinaryTreePrinter(object):
     def __init__(self):
+        self._nodesOfCurrentLine = []
+        self._printedWidth = 0
+        self._spaces = []
+        self._lineWidth = 0
+        self._line0 = ''
+        self._line1 = ''
+        self._line2 = ''
+        self._line3 = ''
+        self.printStructureLine = True
         pass
 
-    def printString(self, s, printedWidth, lineWidth):
-        sys.stdout.write(s)
-        printedWidth += len(s)
-        if printedWidth == lineWidth:
-            sys.stdout.write('\n')
-            printedWidth = 0
-        return printedWidth
+    def printNodeStructureLine(self, node):
+        vWidth = self.intWidth(node.val)
+        i = len(self._line2)
+        while i < len(self._spaces) and self._spaces[i]:
+            self._line2 += ' '
+            i += 1
+
+        #              3333333
+        #                 |
+        #          ---------------
+        #         44            4444
+        #
+        # <------><><-><-----><><--><----->
+        # 1       2 3  4      5 6   7
+        #
+        # 1. llWidth
+        # 2. lvWidth
+        # 3. lrWidth
+        # 4. vWidth
+        # 5. rl..
+        # 6. rv..
+        # 7. rr..
+        if node.left:
+            llWidth = self.nodeWidth(node.left.left)
+            lrWidth = self.nodeWidth(node.left.right)
+            lvWidth = self.intWidth(node.left.val)
+            self._line2 += ' ' * (llWidth + lvWidth / 2)
+            self._line2 += '-' * (lvWidth - lvWidth/2 + lrWidth + vWidth/2)
+        if node.right:
+            rlWidth = self.nodeWidth(node.right.left)
+            rrWidth = self.nodeWidth(node.right.right)
+            rvWidth = self.intWidth(node.right.val)
+            i = len(self._line2)
+            self._line2 += '-' * (vWidth - vWidth/2 + rvWidth - rvWidth/2 + rlWidth)
+            self._line2 += ' ' * (rvWidth/2 + rrWidth)
+
+    def printNode(self, node):
+        lWidth = self.nodeWidth(node.left)
+        rWidth = self.nodeWidth(node.right)
+        vWidth = self.intWidth(node.val)
+        while self.positionOcuppied():
+            self.printString(' ')
+        nodePos = self._printedWidth + lWidth
+
+        if self.printStructureLine:
+            self.printNodeStructureLine(node)
+
+        self.markNode(nodePos, vWidth)
+
+        self.printString(' ' * lWidth)
+        self.printString(str(node.val),
+                         self.printStructureLine and (node.left or node.right))
+        self.printString(' ' * rWidth)
+
+    def printString(self, s, isNode=False):
+        # sys.stdout.write(s)
+        self._line0 += s
+        if isNode:
+            l = [' '] * len(s)
+            l[len(s) / 2] = '|'
+            self._line1 += ''.join(l)
+        else:
+            self._line1 += ' ' * len(s)
+        self._printedWidth += len(s)
+        if self._printedWidth == self._lineWidth:
+            # sys.stdout.write('\n')
+            self._line0 += '\n'
+            self._line1 += '\n'
+            self._line2 += '\n'
+            if self.printStructureLine:
+                self._line0 += self._line1
+                self._line0 += self._line2
+            self._line1 = ''
+            self._line2 = ''
+            self._printedWidth = 0
+            # self.drawLines()
+
+    def drawLines(self):
+        #   1       2
+        #   |       |       : line1
+        # -----   -----     : line2
+        # |   |   |   |     : line3
+        line1 = ''
+        # line2 = ''
+        # line3 = ''
+        while len(self._nodesOfCurrentLine) > 0:
+            node = self._nodesOfCurrentLine.pop(0)
+            i = 0
+            while self.positionOcuppied():
+                self._line2 += ' '
+                self._line3 += ' '
+                i += 1
+
+            # XXX Spaces on the Left !!!
+            line1 += ' ' * (self.nodeWidth(node.left) + len(str(node.val)) / 2)
+            line1 += '|'
+
+    def markNode(self, start, length):
+        i = start
+        while i < start + length:
+            self._spaces[i] = True
+            i += 1
+
+    def positionOcuppied(self):
+        return self._spaces[self._printedWidth]
 
     def printTree(self, root):
+        print self.drawTreeGraphByString(root)
+        print
+
+    def drawTreeGraphByString(self, root):
         queue = [root]
-        lineWidth = self.nodeWidth(root)
-        spaces = [False] * lineWidth
-        printedWidth = 0
+        self._lineWidth = self.nodeWidth(root)
+        self._spaces = [False] * self._lineWidth
         while len(queue) > 0:
             node = queue.pop(0)
-            lWidth = self.nodeWidth(node.left)
-            rWidth = self.nodeWidth(node.right)
-            vWidth = self.intWidth(node.val)
-            # XXX print pad
-            # XXX print no newline !!!
-            while spaces[printedWidth]:
-                printedWidth = self.printString(' ', printedWidth, lineWidth)
-            # for i in range(lWidth, lWidth + vWidth):
-            for i in range(printedWidth + lWidth, printedWidth + lWidth + vWidth):
-                spaces[i] = True
-            printedWidth = self.printString(' ' * lWidth, printedWidth, lineWidth)
-            # XXX node.val -> len !!
-            printedWidth = self.printString(str(node.val), printedWidth, lineWidth)
-            printedWidth = self.printString(' ' * rWidth, printedWidth, lineWidth)
+            self._nodesOfCurrentLine.append(node)
+            self.printNode(node)
 
-            # XXX add new node, add current to spaces
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-            # new line
-            # left blank
-        print
+        return self._line0
 
     def nodeWidth(self, root):
         if root is None:
