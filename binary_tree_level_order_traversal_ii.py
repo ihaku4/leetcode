@@ -24,8 +24,7 @@ class Solution:
                 if n.right:
                     stack.append(n.right)
                 levelValue.append(n.val)
-            valueList.append(levelValue)
-        valueList.reverse()
+            valueList.insert(0, levelValue)
         return valueList
 
 from binaray_tree_builder import BinaryTree
