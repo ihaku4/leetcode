@@ -21,6 +21,7 @@ class BinaryTree(object):
     def deserialize(self, serial=None):
         if serial is None:
             serial = self._serial
+        serial = serial.strip()
         if len(serial) < 2:
             return None
         serial = serial[1:-1]
@@ -36,11 +37,16 @@ class BinaryTree(object):
             node = nodeQueue.pop(0)
             node.left = self.createNode(lv)
             node.right = self.createNode(rv)
-            nodeQueue.append(node.left)
-            nodeQueue.append(node.right)
+            if node.left:
+                nodeQueue.append(node.left)
+            if node.right:
+                nodeQueue.append(node.right)
         return root
 
     def createNode(self, strV):
-        if strV == '#':
+        if not strV:
+            return None
+        strV = strV.strip()
+        if strV == '#' or strV == '':
             return None
         return TreeNode(int(strV))

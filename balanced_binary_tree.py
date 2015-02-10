@@ -25,3 +25,18 @@ class Solution:
         balance = balanceL and balanceR and \
             (depthL == depthR or depthL == depthR + 1 or depthL + 1 == depthR)
         return depth, balance
+
+from binaray_tree_builder import BinaryTree
+# from binaray_tree_builder import TreeNode
+from binary_tree_printer import BinaryTreePrinter
+
+# tree = BinaryTree('{1, #, 2, #, 3}')
+# tree = BinaryTree('{1,#,2,#,3}')
+serial = '{1,2,2,3,3,3,3,4,4,4,4,4,4,#,#,5,5} '
+serial = '{1, #, 2, #, 3}'
+tree = BinaryTree(serial)
+root = tree.deserialize()
+print Solution().isBalanced(root)
+printer = BinaryTreePrinter()
+printer.printTree(root)
+print serial
