@@ -27,7 +27,7 @@ class Solution:
             valueList.insert(0, levelValue)
         return valueList
 
-from binaray_tree_builder import BinaryTree
+from binary_tree_builder import BinaryTree
 from binary_tree_printer import BinaryTreePrinter
 
 bt = BinaryTree()

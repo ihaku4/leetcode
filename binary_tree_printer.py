@@ -168,7 +168,7 @@ class BinaryTreePrinter(object):
 
 
 import unittest
-from binaray_tree_builder import BinaryTree
+from binary_tree_builder import BinaryTree
 
 
 class Test(unittest.TestCase):
