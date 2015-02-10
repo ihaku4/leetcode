@@ -19,6 +19,7 @@ class BinaryTreePrinter(object):
         i = len(self._line2)
         while i < len(self._spaces) and self._spaces[i]:
             self._line2 += ' '
+            self._line3 += ' '
             i += 1
 
         #              3333333
@@ -40,15 +41,28 @@ class BinaryTreePrinter(object):
             llWidth = self.nodeWidth(node.left.left)
             lrWidth = self.nodeWidth(node.left.right)
             lvWidth = self.intWidth(node.left.val)
+            # self._line2 += ' ' * (llWidth + lvWidth / 2)
+            # self._line2 += '-' * (lvWidth - lvWidth/2 + lrWidth + vWidth/2)
             self._line2 += ' ' * (llWidth + lvWidth / 2)
-            self._line2 += '-' * (lvWidth - lvWidth/2 + lrWidth + vWidth/2)
+            self._line2 += ' '
+            self._line2 += '-' * (lvWidth - lvWidth/2 + lrWidth + vWidth/2 - 1)
+
+            self._line3 += ' ' * (llWidth + lvWidth / 2)
+            self._line3 += '/'
+            self._line3 += ' ' * (lvWidth - lvWidth/2 + lrWidth + vWidth/2 - 1)
         if node.right:
             rlWidth = self.nodeWidth(node.right.left)
             rrWidth = self.nodeWidth(node.right.right)
             rvWidth = self.intWidth(node.right.val)
-            i = len(self._line2)
-            self._line2 += '-' * (vWidth - vWidth/2 + rvWidth - rvWidth/2 + rlWidth)
+            # self._line2 += '-' * (vWidth - vWidth/2 + rvWidth - rvWidth/2 + rlWidth)
+            # self._line2 += ' ' * (rvWidth/2 + rrWidth)
+            self._line2 += '-' * (vWidth - vWidth/2 + rvWidth - rvWidth/2 + rlWidth - 1)
+            self._line2 += ' '
             self._line2 += ' ' * (rvWidth/2 + rrWidth)
+
+            self._line3 += ' ' * (vWidth - vWidth/2 + rvWidth - rvWidth/2 + rlWidth - 1)
+            self._line3 += '\\'
+            self._line3 += ' ' * (rvWidth/2 + rrWidth)
 
     def printNode(self, node):
         lWidth = self.nodeWidth(node.left)
@@ -83,11 +97,14 @@ class BinaryTreePrinter(object):
             self._line0 += '\n'
             self._line1 += '\n'
             self._line2 += '\n'
+            self._line3 += '\n'
             if self.printStructureLine:
                 self._line0 += self._line1
                 self._line0 += self._line2
+                self._line0 += self._line3
             self._line1 = ''
             self._line2 = ''
+            self._line3 = ''
             self._printedWidth = 0
             # self.drawLines()
 
