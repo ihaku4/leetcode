@@ -9,7 +9,7 @@
 class Solution:
     # @param root, a tree node
     # @return a boolean
-    def isSymmetric(self, root):
+    def _isSymmetric(self, root):
         if not root:
             return True
         if not root.left and not root.right:
@@ -37,6 +37,21 @@ class Solution:
                 lstack.append(l.right)
                 rstack.append(r.left)
         return True
+
+    def isSymmetric(self, root):
+        if not root:
+            return True
+        return self.isSymmetricRec(root.left, root.right)
+
+    def isSymmetricRec(self, left, right):
+        if not left and not right:
+            return True
+        elif not left or not right:
+            return False
+        if left.val != right.val:
+            return False
+        return self.isSymmetricRec(left.left, right.right) and \
+               self.isSymmetricRec(left.right, right.left)
 
 
 from binary_tree_builder import BinaryTree
