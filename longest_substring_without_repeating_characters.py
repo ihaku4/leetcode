@@ -6,21 +6,10 @@ class Solution:
         subIndex = 0
         maxLen = 0
         while i < len(s):
-            if s[i] not in map:
-                if maxLen < i - subIndex + 1:
-                    maxLen = i - subIndex + 1
+            if s[i] not in map or map[s[i]] < subIndex:
+                maxLen = max(maxLen, i - subIndex + 1)
             else:
-                lastSubIndex = subIndex
                 subIndex = map[s[i]] + 1
-                # efficiency improve
-                if subIndex - lastSubIndex < i - subIndex:
-                    for j in range(lastSubIndex, subIndex):
-                        map.pop(s[j])
-                else:
-                    map = {}
-                    for j in range(subIndex, i):
-                        map[s[j]] = j
-
             map[s[i]] = i
             i += 1
         return maxLen
