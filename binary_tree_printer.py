@@ -1,6 +1,3 @@
-import sys
-
-
 class BinaryTreePrinter(object):
     def __init__(self, printStructureLine=False):
         self._nodesOfCurrentLine = []
@@ -142,7 +139,7 @@ class BinaryTreePrinter(object):
         print
 
     def drawTreeGraphByString(self, root):
-        self.__init__()
+        self.__init__(self.printStructureLine)
         queue = [root]
         self._lineWidth = self.nodeWidth(root)
         self._spaces = [False] * self._lineWidth
@@ -171,7 +168,7 @@ class BinaryTreePrinter(object):
 
 
 import unittest
-from binary_tree_builder import BinaryTree
+# from binary_tree_builder import BinaryTree
 
 
 class Test(unittest.TestCase):
