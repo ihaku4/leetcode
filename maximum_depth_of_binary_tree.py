@@ -23,6 +23,11 @@ class Solution:
                 stack.append((node.right, depth + 1))
         return maxDepth
 
+    def maxDepthRec(self, root):
+        if not root:
+            return 0
+        return 1 + max(self.maxDepthRec(root.left), self.maxDepthRec(root.right))
+
 from binary_tree_builder import BinaryTree
 from binary_tree_printer import BinaryTreePrinter
 
@@ -57,6 +62,15 @@ class Test(unittest.TestCase):
             print len(graph)
             print self.bp._lineWidth
             self.assertEqual(self.cases[c], self.s.maxDepth(c))
+
+    def test_default_case_Rec(self):
+        for c in self.cases:
+            graph = self.bp.drawTreeGraphByString(c)
+            print graph
+            print graph.encode('hex')
+            print len(graph)
+            print self.bp._lineWidth
+            self.assertEqual(self.cases[c], self.s.maxDepthRec(c))
 
 if __name__ == '__main__':
     unittest.main()
