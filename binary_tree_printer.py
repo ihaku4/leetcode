@@ -2,7 +2,7 @@ import sys
 
 
 class BinaryTreePrinter(object):
-    def __init__(self):
+    def __init__(self, printStructureLine=False):
         self._nodesOfCurrentLine = []
         self._printedWidth = 0
         self._spaces = []
@@ -11,7 +11,7 @@ class BinaryTreePrinter(object):
         self._line1 = ''
         self._line2 = ''
         self._line3 = ''
-        self.printStructureLine = True
+        self.printStructureLine = printStructureLine
         pass
 
     def printNodeStructureLine(self, node):
@@ -142,6 +142,7 @@ class BinaryTreePrinter(object):
         print
 
     def drawTreeGraphByString(self, root):
+        self.__init__()
         queue = [root]
         self._lineWidth = self.nodeWidth(root)
         self._spaces = [False] * self._lineWidth
@@ -154,6 +155,8 @@ class BinaryTreePrinter(object):
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
+        if self._line0[-1] != '\n':
+            self._line0 += ' ' * (self._lineWidth - self._printedWidth) + '\n'
         return self._line0
 
     def nodeWidth(self, root):

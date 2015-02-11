@@ -26,7 +26,7 @@ class Solution:
             (depthL == depthR or depthL == depthR + 1 or depthL + 1 == depthR)
         return depth, balance
 
-from binaray_tree_builder import BinaryTree
+from binary_tree_builder import BinaryTree
 # from binaray_tree_builder import TreeNode
 from binary_tree_printer import BinaryTreePrinter
 
