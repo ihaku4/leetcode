@@ -12,8 +12,15 @@ class Solution:
             else:
                 lastSubIndex = subIndex
                 subIndex = map[s[i]] + 1
-                for j in range(lastSubIndex, subIndex):
-                    map.pop(s[j])
+                # efficiency improve
+                if subIndex - lastSubIndex < i - subIndex:
+                    for j in range(lastSubIndex, subIndex):
+                        map.pop(s[j])
+                else:
+                    map = {}
+                    for j in range(subIndex, i):
+                        map[s[j]] = j
+
             map[s[i]] = i
             i += 1
         return maxLen
