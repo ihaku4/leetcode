@@ -1,16 +1,16 @@
 class Solution:
     # @return an integer
     def lengthOfLongestSubstring(self, s):
-        map = {}
+        charPos = [-1] * 256
         i = 0
         subIndex = 0
         maxLen = 0
         while i < len(s):
-            if s[i] not in map or map[s[i]] < subIndex:
+            if charPos[ord(s[i])] < subIndex:
                 maxLen = max(maxLen, i - subIndex + 1)
             else:
-                subIndex = map[s[i]] + 1
-            map[s[i]] = i
+                subIndex = charPos[ord(s[i])] + 1
+            charPos[ord(s[i])] = i
             i += 1
         return maxLen
 
