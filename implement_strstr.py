@@ -5,12 +5,15 @@ class Solution:
     def strStr(self, haystack, needle):
         if len(needle) == 0:
             return 0
+        if len(needle) > len(haystack):
+            return -1
         matchedPos = {}
         i = 0
         while i < len(haystack):
             unmatched = []
             # TODO first check the smallest in mactchedPos
-            matchedPos[i] = True
+            if len(needle) + i <= len(haystack):
+                matchedPos[i] = True
             for start in matchedPos:
                 # XXX if len needle == 0
                 if haystack[i] == needle[i - start]:
