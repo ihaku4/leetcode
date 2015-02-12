@@ -1,16 +1,83 @@
 class Solution:
     # @return a list of integers
-    def grayCode(self, n):
+    def _grayCode(self, n):
         grayCode = [0]
+        grayCodeSet = set(grayCode)
         num = -1
         while num != grayCode[-1]:
             num = grayCode[-1]
-            for i in range(n):
+            for i in range(n):  # XXX
                 s = 1 << i
                 new = num ^ s
-                if new not in grayCode:
+                if new not in grayCodeSet:  # XX
                     grayCode.append(new)
+                    grayCodeSet.add(new)
                     break
+                # print 'collide: 0x%x  %d' % (new, n)
+        return grayCode
+
+    def grayCode(self, n):
+        if n < 0:
+            return None
+        if n == 0:
+            return [0]
+        if n == 1:
+            return [0, 1]
+        cur = [0] * 2**n
+        cur[0] = 0
+        cur[1] = 1
+        for width in range(1, n):
+            length = 2 ** width
+            head = 1 << width
+            for i in range(length):
+                cur[2 * length - 1 - i] = cur[i] | head
+        return cur
+
+
+    def ___grayCode(self, n):
+        if n < 0:
+            return None
+        if n == 0:
+            return [0]
+        if n == 1:
+            return [0, 1]
+        # grayCode = []
+        # XXX first init all list space?
+        cur = [0, 1]
+        for i in range(1, n):
+            nxt = cur[:]
+            for d in cur[::-1]:
+                nxt.append(d | 1<<i)
+            cur = nxt
+        return cur
+
+    def __grayCode(self, n):
+        if n < 0:
+            return None
+        if n == 0:
+            return [0]
+        solved = [None] * (n + 1)
+        solved[1] = [0, 1]
+        return self.helper(n, solved)
+
+    def helper(self, n, solved):
+        if solved[n]:
+            return solved[n]
+        headLen = n / 2
+        tailLen = n - headLen
+        head = self.helper(headLen, solved)  # XXX binary divide?
+        tail = self.helper(tailLen, solved)
+        grayCode = []
+        reverse = False
+        for t in tail:
+            if not reverse:
+                for h in head:
+                    grayCode.append((h<<tailLen) | t)
+            else:
+                for h in head[::-1]:
+                    grayCode.append((h<<tailLen) | t)
+            reverse = not reverse
+        solved[n] = grayCode
         return grayCode
 
 
@@ -32,7 +99,12 @@ class Test(unittest.TestCase):
             for i in range(n):
                 self.assertTrue(i in grayCode)
 
-    def test_large_case(self):
+    def test_small_case(self):
+        for i in range(4):
+            code = self.s.grayCode(i)
+            print i, code
+
+    def _test_large_case(self):
         for i in range(100):
             code = self.s.grayCode(i)
             print i, len(code)
