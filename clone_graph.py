@@ -14,12 +14,13 @@ class Solution:
         oldMap = {node.label: node}
         newMap = {}
         visit = 0
+        # clone nodes without real neighbor relations
         while visit < len(queue):
             cur = queue[visit]
 
             # create new and clone label
             newNode = UndirectedGraphNode(cur.label)
-            # temperately link new neighbors to old
+            # temperately link new node's neighbors to old
             newNode.neighbors = cur.neighbors
             newMap[newNode.label] = newNode
 
