@@ -1,18 +1,22 @@
 class Solution:
     # @return an integer
     def lengthOfLongestSubstring(self, s):
-        charPos = [-1] * 256
-        i = 0
-        subIndex = 0
-        maxLen = 0
-        while i < len(s):
-            if charPos[ord(s[i])] < subIndex:
-                maxLen = max(maxLen, i - subIndex + 1)
+        lastPosOfChar = [-1] * 256
+        currentSubStart = 0
+        maxSubLen = 0
+        for i, c in enumerate(s):
+            #             curSubStart        i, c
+            #             |                  |
+            # -c----c-----*------------------c-----
+            # <--scaned-->*------------------c-----
+            if lastPosOfChar[ord(c)] < currentSubStart:
+                maxSubLen = max(maxSubLen, i - currentSubStart + 1)
+            # -c----c-----*----c-------------c-----
+            # -c----c----------c*------------c-----
             else:
-                subIndex = charPos[ord(s[i])] + 1
-            charPos[ord(s[i])] = i
-            i += 1
-        return maxLen
+                currentSubStart = lastPosOfChar[ord(c)] + 1
+            lastPosOfChar[ord(c)] = i
+        return maxSubLen
 
 
 import unittest
