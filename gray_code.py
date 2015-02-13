@@ -17,16 +17,19 @@ class Solution:
         return grayCode
 
     def grayCode(self, n):
+        return map(lambda x: (x>>1) ^ x, range(2 ** n))
+
+    # 00   00   00   00
+    # 00   01   01   01
+    # 00   00   01   11
+    # 00   00   00   10
+    #      1    2    3
+    # 1. init, 2. mirror, 3. add bit '1' to head
+    def ____grayCode(self, n):
         if n < 0:
             return None
-        if n == 0:
-            return [0]
-        if n == 1:
-            return [0, 1]
         cur = [0] * 2**n
-        cur[0] = 0
-        cur[1] = 1
-        for width in range(1, n):
+        for width in range(n):
             length = 2 ** width
             head = 1 << width
             for i in range(length):
@@ -102,10 +105,11 @@ class Test(unittest.TestCase):
     def test_small_case(self):
         for i in range(4):
             code = self.s.grayCode(i)
-            print i, code
+            print i, code, '========='
 
     def _test_large_case(self):
-        for i in range(100):
+        for i in range(1000):
+        # for i in range(1000, 2000):
             code = self.s.grayCode(i)
             print i, len(code)
 
