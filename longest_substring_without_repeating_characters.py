@@ -32,6 +32,7 @@ class Test(unittest.TestCase):
         self.assertTrue(True)
         self.assertEqual(3, self.s.lengthOfLongestSubstring('abcabcbb'))
         self.assertEqual(self.s.lengthOfLongestSubstring('bbbbbbbbb'), 1)
+        self.assertEqual(self.s.lengthOfLongestSubstring('aaaaaaaab'), 2)
         self.assertEqual(self.s.lengthOfLongestSubstring('123456727abcdefghijklmnm'), 16)
 
 if __name__ == '__main__':
