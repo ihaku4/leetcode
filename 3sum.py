@@ -2,9 +2,10 @@ class Solution:
     # @return a list of lists of length 3, [[val1,val2,val3]]
     def threeSum(self, num):
         if len(num) < 3:
-            return None
+            return []
         num.sort()
         res = []
+        resSet = set()
         for ic, c in ((i, num[i]) for i in xrange(len(num) - 1, -1, -1) if num[i] >= 0):
             if c < 0:
                 break
@@ -13,7 +14,10 @@ class Solution:
                 try:
                     ib = num.index(-a-c, ia + 1, ib_pre)
                     ib_pre = ib
-                    res.append([a, num[ib], c])
+                    triplet = [a, num[ib], c]
+                    if tuple(triplet) not in resSet:
+                        res.append(triplet)
+                        resSet.add(tuple(triplet))
                 except ValueError:
                     continue
         return res
