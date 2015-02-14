@@ -1,6 +1,24 @@
 class Solution:
     # @return a list of lists of length 3, [[val1,val2,val3]]
     def threeSum(self, num):
+        if len(num) < 3:
+            return None
+        num.sort()
+        res = []
+        for ic, c in ((i, num[i]) for i in xrange(len(num) - 1, -1, -1) if num[i] >= 0):
+            if c < 0:
+                break
+            ib_pre = ic
+            for ia, a in ((i, num[i]) for i in xrange(ic) if num[i] <= 0):
+                try:
+                    ib = num.index(-a-c, ia + 1, ib_pre)
+                    ib_pre = ib
+                    res.append([a, num[ib], c])
+                except ValueError:
+                    continue
+        return res
+
+    def _threeSum(self, num):
         num.sort()
         # res = []  # TODO use set instead of list ?
         res = {}
