@@ -5,19 +5,18 @@ class Solution:
             return []
         num.sort()
         res = []
-        resSet = set()
-        for ic, c in ((i, num[i]) for i in xrange(len(num) - 1, -1, -1) if num[i] >= 0):
-            if c < 0:
-                break
+        for ic, c in ((i, num[i]) for i in xrange(len(num)-1, -1, -1) if num[i] >= 0):
+            if ic < len(num) - 1 and c == num[ic + 1]:
+                continue
             ib_pre = ic
-            for ia, a in ((i, num[i]) for i in xrange(ic) if num[i] <= 0):
+            for ia, a in ((i, num[i]) for i in xrange(ic) if num[i] <= 0 and num[i] >= -2 * c):
+                # -2c < a < -c
+                # -c < a
                 try:
                     ib = num.index(-a-c, ia + 1, ib_pre)
                     ib_pre = ib
                     triplet = [a, num[ib], c]
-                    if tuple(triplet) not in resSet:
-                        res.append(triplet)
-                        resSet.add(tuple(triplet))
+                    res.append(triplet)
                 except ValueError:
                     continue
         return res
