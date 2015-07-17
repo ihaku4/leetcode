@@ -37,7 +37,7 @@ class Solution:
                 lo = mi + 1
         return 0
 
-    def minSubArrayLen3(self, s, nums):
+    def minSubArrayLenNlogN(self, s, nums):
         sums = [0] * len(nums)
         sum_tmp = 0
         for i in xrange(len(nums)):
@@ -58,7 +58,7 @@ class Solution:
         h, t = subs[0]
         return t - h + 1
 
-    def minSubArrayLen(self, s, nums):
+    def minSubArrayLenN(self, s, nums):
         min_length = len(nums)
         # return 0 if sum not large enough
 
@@ -75,6 +75,9 @@ class Solution:
             return 0
         return min_length
 
+    def minSubArrayLen(self, s, nums):
+        #return self.minSubArrayLenN(s, nums)
+        return self.minSubArrayLenNlogN(s, nums)
 
 
 import unittest
