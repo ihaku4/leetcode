@@ -1,9 +1,8 @@
 class TrieNode:
     # Initialize your data structure here.
-    def __init__(self, value=None):
-        self.value = value
-        self.left = None
-        self.right = None
+    def __init__(self):
+        self.isWordEnd = False
+        self.children = [None] * 26
         
 
 class Trie:
@@ -11,60 +10,50 @@ class Trie:
     def __init__(self):
         self.root = TrieNode()
 
+    def indexOfChar(self, c):
+        return ord(c) - ord('a')
+
     # @param {string} word
     # @return {void}
     # Inserts a word into the trie.
     def insert(self, word):
         node = self.root
-        while node:
-            if word == node.value or node.value is None:
-                node.value = word
-                return
-            elif word < node.value:
-                if node.left is None:
-                    node.left = TrieNode(value=word)
-                    return
-                else:
-                    node = node.left
-            elif word > node.value:
-                if node.right is None:
-                    node.right = TrieNode(value=word)
-                    return
-                else:
-                    node = node.right
+        for c in word:
+            idx = self.indexOfChar(c)
+            if node.children[idx] is None:
+                newNode = TrieNode()
+                node.children[idx] = newNode
+                node = newNode
+            else:
+                node = node.children[idx]
+        node.isWordEnd = True
         
+
+    def searchHelper(self, word):
+        node = self.root
+        for c in word:
+            idx = self.indexOfChar(c)
+            if node.children[idx] is None:
+                return None
+            else:
+                node = node.children[idx]
+        return node
 
     # @param {string} word
     # @return {boolean}
     # Returns if the word is in the trie.
     def search(self, word):
-        node = self.root
-        while node and node.value is not None:
-            if word == node.value:
-                return True
-            elif word < node.value:
-                node = node.left
-            elif word > node.value:
-                node = node.right
-        return False
-        
+        node = self.searchHelper(word)
+        if node:    return node.isWordEnd
+        else:       return False
 
     # @param {string} prefix
     # @return {boolean}
     # Returns if there is any word in the trie
     # that starts with the given prefix.
     def startsWith(self, prefix):
-        node = self.root
-        while node and node.value is not None:
-            if prefix <= node.value:
-                if node.value.startswith(prefix):
-                    return True
-                else:
-                    node = node.left
-            elif prefix > node.value:
-                node = node.right
-        return False
-        
+        node = self.searchHelper(prefix)
+        return node is not None
 
 # Your Trie object will be instantiated and called as such:
 # trie = Trie()
