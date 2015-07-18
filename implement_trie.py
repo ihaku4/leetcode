@@ -2,7 +2,7 @@ class TrieNode:
     # Initialize your data structure here.
     def __init__(self):
         self.isWordEnd = False
-        self.children = [None] * 26
+        self.children = {}
         
 
 class Trie:
@@ -19,24 +19,22 @@ class Trie:
     def insert(self, word):
         node = self.root
         for c in word:
-            idx = self.indexOfChar(c)
-            if node.children[idx] is None:
+            if not node.children.has_key(c):
                 newNode = TrieNode()
-                node.children[idx] = newNode
+                node.children[c] = newNode
                 node = newNode
             else:
-                node = node.children[idx]
+                node = node.children[c]
         node.isWordEnd = True
         
 
     def searchHelper(self, word):
         node = self.root
         for c in word:
-            idx = self.indexOfChar(c)
-            if node.children[idx] is None:
+            if not node.children.has_key(c):
                 return None
             else:
-                node = node.children[idx]
+                node = node.children[c]
         return node
 
     # @param {string} word
