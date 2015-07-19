@@ -2,6 +2,8 @@ class Course:
     def __init__(self, n):
         self.n = n
         self.dependences = []
+        self.finished = False
+        self.workingOn = False
 
 class Solution:
 
@@ -14,23 +16,21 @@ class Solution:
             c1, c2 = p
             courses[c1].dependences.append(courses[c2]) 
 
-        finished = set()
-        workingOn = set()
         for c in courses:
-            if not self.studyCourse(c, finished, workingOn):
+            if not self.studyCourse(c):
                 return False
         return True
 
-    def studyCourse(self, course, finished, workingOn):
-        if course in finished:  return True
-        if course in workingOn: return False
+    def studyCourse(self, course):
+        if course.finished:     return True
+        if course.workingOn:    return False
 
-        workingOn.add(course)
+        course.workingOn = True
         for d in course.dependences:
-            if not self.studyCourse(d, finished, workingOn):
+            if not self.studyCourse(d):
                 return False
-        finished.add(course)
-        workingOn.remove(course)
+        course.finished = True
+        course.workingOn = False
         return True
 
 
