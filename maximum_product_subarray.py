@@ -1,7 +1,7 @@
 class Solution:
     # @param {integer[]} nums
     # @return {integer}
-    def maxProduct(self, nums):
+    def maxProduct2(self, nums):
         maxP = None
 
         i = 0
@@ -49,7 +49,18 @@ class Solution:
                     maxP = max(maxP, prod / div)
         return maxP
 
-
+    def maxProduct(self, A):
+        minNow = A[0]
+        maxNow = A[0]
+        output = maxNow
+        for num in A[1:]:
+            minPrev = minNow
+            maxPrev = maxNow
+            print minPrev, maxPrev
+            minNow = min(num, minPrev * num, maxPrev * num)
+            maxNow = max(num, minPrev * num, maxPrev * num)
+            output = max(output, maxNow)
+        return output
 
 import unittest
 
@@ -61,6 +72,10 @@ class Test(unittest.TestCase):
     def test_default_case(self):
         self.assertEqual(6, self.s.maxProduct([2, 3, -2, 4]))
         self.assertEqual(0, self.s.maxProduct([-2, 0, -1]))
+        self.assertEqual(6, self.s.maxProduct([2, 3, 0, 0, -2, 4]))
+        self.assertEqual(16, self.s.maxProduct([2, 3, 0, 0, -2, 4, 4]))
+        print '-------'
+        self.assertEqual(16, self.s.maxProduct([2, 3, 0, 0, 4, 4]))
 
 if __name__ == '__main__':
     unittest.main()
