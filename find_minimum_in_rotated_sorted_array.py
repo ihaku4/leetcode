@@ -7,15 +7,18 @@ class Solution:
         if len(nums) <= 2:
             return min(nums)
 
+        numsH = nums[0]
+        numsT = nums[-1]
+
         lo, hi = 0, len(nums) - 2
         while lo <= hi:
             m = (lo + hi) / 2
             if nums[m] > nums[m + 1]:
                 return nums[m + 1]
             else:
-                if nums[m] >= nums[0]:
+                if nums[m] >= numsH:
                     lo = m + 1
-                if nums[m] <= nums[-1]:
+                if nums[m] <= numsT:
                     hi = m - 1
 
 

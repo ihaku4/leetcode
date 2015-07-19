@@ -11,23 +11,27 @@ class Solution:
     # @param {integer[][]} prerequisites
     # @return {boolean}
     def canFinish(self, numCourses, prerequisites):
+        courses = self.init(numCourses, prerequisites)
+
+        for c in courses:
+            if not self.study(c):
+                return False
+        return True
+
+    def init(self, numCourses, prerequisites):
         courses = [Course(n) for n in xrange(numCourses)]
         for p in prerequisites:
             c1, c2 = p
             courses[c1].dependences.append(courses[c2]) 
+        return courses
 
-        for c in courses:
-            if not self.studyCourse(c):
-                return False
-        return True
-
-    def studyCourse(self, course):
+    def study(self, course):
         if course.finished:     return True
         if course.workingOn:    return False
 
         course.workingOn = True
         for d in course.dependences:
-            if not self.studyCourse(d):
+            if not self.study(d):
                 return False
         course.finished = True
         course.workingOn = False
