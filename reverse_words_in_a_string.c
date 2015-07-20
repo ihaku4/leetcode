@@ -21,14 +21,11 @@ reverseWords(char *s)
   int i, j;
 
   // Strip And Reverse
-  printf("%s------%d\n", s, t);
   while (t >= 0 && s[t] == ' ') s[t--] = '\0';
   reverseString(s, head, t);
   while (t >= 0 && s[t] == ' ') s[t--] = '\0';
 
-  printf("%s------%d\n", s, t);
   t = removeExtraSpacesBetweenWords(s, t + 1) - 1;
-  printf("%s------%d\n", s, t);
 
   // Reverse Every Words
   while (head <= t) {
@@ -39,7 +36,6 @@ reverseWords(char *s)
       reverseString(s, hPre, head - 1);
   }
 
-  printf("%s------%d\n", s, t);
   return s;
 }
 
