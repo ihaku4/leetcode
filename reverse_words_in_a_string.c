@@ -21,21 +21,25 @@ reverseWords(char *s)
   int i, j;
 
   // Strip And Reverse
+  printf("%s------%d\n", s, t);
   while (t >= 0 && s[t] == ' ') s[t--] = '\0';
   reverseString(s, head, t);
   while (t >= 0 && s[t] == ' ') s[t--] = '\0';
 
-  l = removeExtraSpacesBetweenWords(s, t + 1);
-  t = l - 1;
+  printf("%s------%d\n", s, t);
+  t = removeExtraSpacesBetweenWords(s, t + 1) - 1;
+  printf("%s------%d\n", s, t);
 
   // Reverse Every Words
   while (head <= t) {
     while (head <= t && s[head] == ' ') head++;
     hPre = head;
     while (head <= t && s[head] != ' ') head++;
-    if (hPre <= t) reverseString(s, hPre, head - 1);
+    if (hPre <= t)
+      reverseString(s, hPre, head - 1);
   }
 
+  printf("%s------%d\n", s, t);
   return s;
 }
 
@@ -60,7 +64,7 @@ removeExtraSpacesBetweenWords(char *s, int len)
     if (s[j] != '\0')
       s[i++] = s[j];
   s[i] = '\0';
-  return t + 1;
+  return i;
 }
 
 void
@@ -84,7 +88,8 @@ main()
   //char* s = "Reverse Words In A String";
   //char* s = "";
   //char* s = "1 ";
-  char* s = "   a   b ";
+  //char* s = "   a   b ";
+  char* s = "   a   b  c d   e  ";
   //char[strlen(s) + 1] sCp;
   //char sCp[25];
   //char sCp[strlen(s)+1];  // How this works?
