@@ -14,23 +14,10 @@ class Solution:
     '/': divide,
     }
 
-#  PRECEDENCE = {
-#    '+': 1,
-#    '-': 1,
-#    '*': 2,
-#    '/': 2,
-#    }
-
   def __init__(self):
     self.operatorStack = None
     self.operandStack = None
 
-#  def calculate(self, nextOperator=None):
-#    while (len(self.operatorStack) > 0 and
-#           (nextOperator is None or
-#            Solution.PRECEDENCE[nextOperator] <= Solution.PRECEDENCE[self.operatorStack[-1]]
-#           )
-#          ):
   def calculate(self):
     while len(self.operatorStack) > 0:
       operator = self.operatorStack.pop()
@@ -47,13 +34,9 @@ class Solution:
     for t in tokens:
       if t in Solution.OPERATIONS.keys():
         self.operatorStack.append(t)
-        print self.operatorStack
-        print self.operandStack
         self.calculate()
       else:
         self.operandStack.append(int(t))
-    print self.operatorStack
-    print self.operandStack
     self.calculate()
     return self.operandStack[0]
 
@@ -78,5 +61,6 @@ class Test(unittest.TestCase):
     #["                 0                  ","17","+","5","+"] 
     #["                                       17    ","5","+"] 
     #["                    22                               "] 
+
 if __name__ == '__main__':
   unittest.main()
