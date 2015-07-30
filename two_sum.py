@@ -2,7 +2,7 @@ class Solution:
     # @param {integer[]} nums
     # @param {integer} target
     # @return {integer[]}
-    def twoSum(self, nums, target):
+    def twoSum2(self, nums, target):
         numsWithIndex = []
         for i, n in enumerate(nums):
             numsWithIndex.append((i + 1, n))
@@ -17,6 +17,16 @@ class Solution:
             else:
                 return (min(numsWithIndex[head][0], numsWithIndex[tail][0]),
                         max(numsWithIndex[head][0], numsWithIndex[tail][0]))
+        return None
+
+    def twoSum(self, nums, target):
+        numMap = {}
+        for i, n in enumerate(nums):
+            numMap[n] = i
+        for i, n in enumerate(nums):
+            #if target - n in numMap.keys():
+            if numMap.has_key(target - n) and numMap[target - n] != i:
+                return i + 1, numMap[target - n] + 1
 
 
 import unittest
