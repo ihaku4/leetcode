@@ -22,11 +22,9 @@ class Solution:
     def twoSum(self, nums, target):
         numMap = {}
         for i, n in enumerate(nums):
+            if numMap.has_key(target - n):
+                return numMap[target - n] + 1, i + 1
             numMap[n] = i
-        for i, n in enumerate(nums):
-            #if target - n in numMap.keys():
-            if numMap.has_key(target - n) and numMap[target - n] != i:
-                return i + 1, numMap[target - n] + 1
 
 
 import unittest
