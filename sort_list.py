@@ -14,7 +14,10 @@ class Solution:
     def sortListHelper(self, head, length):
 
         # Tackle minimal situation.
-        if length <= 1:
+        if length == 0:
+            return head
+        if length == 1:
+            head.next = None
             return head
 
         # Split current list into 2 sublists recursively,
@@ -28,32 +31,29 @@ class Solution:
         secondHead = self.sortListHelper(secondHead, length - length / 2)
 
         # Merge the two sorted sublists.
-        firstHead = head
+        newHead = self.mergeList(head, secondHead)
+        return newHead
+
+    def mergeList(self, firstHead, secondHead):
         cur = ListNode(0)
         newHead = cur
-        firstLength = length / 2
-        secondLength = length - length / 2
-        while firstLength > 0 and secondLength > 0:
+        while firstHead and secondHead:
             if firstHead.val <= secondHead.val:
                 cur.next = firstHead
                 cur = firstHead
                 firstHead = firstHead.next
-                firstLength -= 1
             else:
                 cur.next = secondHead
                 cur = secondHead
                 secondHead = secondHead.next
-                secondLength -= 1
-        while firstLength > 0:
+        while firstHead:
             cur.next = firstHead
             cur = firstHead
             firstHead = firstHead.next
-            firstLength -= 1
-        while secondLength > 0:
+        while secondHead:
             cur.next = secondHead
             cur = secondHead
             secondHead = secondHead.next
-            secondLength -= 1
 
         # Break the last node link.
         cur.next = None
