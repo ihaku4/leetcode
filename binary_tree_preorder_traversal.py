@@ -9,15 +9,33 @@ class Solution:
     # @param {TreeNode} root
     # @return {integer[]}
     def preorderTraversal(self, root):
-        res = []
-        self.preorderTraversalHelper(root, res)
-        return res
+        if not root:
+            return []
+
+#        res = []
+#        self.preorderTraversalHelper(root, res)
+#        return res
+        return self.preorderTraversalIterative(root)
 
     def preorderTraversalHelper(self, node, visited):
         if node:
             visited.append(node.val)
             self.preorderTraversalHelper(node.left, visited)
             self.preorderTraversalHelper(node.right, visited)
+
+    def preorderTraversalIterative(self, node):
+        nodeStack = [node]
+        visited = []
+        while nodeStack:
+            node = nodeStack.pop()
+            visited.append(node.val)
+            if node.right:
+                nodeStack.append(node.right)
+            if node.left:
+                nodeStack.append(node.left)
+        return visited
+
+
 
 
 import unittest
