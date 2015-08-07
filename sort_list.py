@@ -20,11 +20,8 @@ class Solution:
         # Split current list into 2 sublists recursively,
         # Break in the middle.
         secondHead = head
-        for i in xrange(length / 2 - 1):
+        for i in xrange(length / 2):
             secondHead = secondHead.next
-        tail = secondHead
-        secondHead = secondHead.next
-        tail.next = None
 
         # Sort the two sublists separately.
         head = self.sortListHelper(head, length / 2)
@@ -34,23 +31,32 @@ class Solution:
         firstHead = head
         cur = ListNode(0)
         newHead = cur
-        while firstHead and secondHead:
+        firstLength = length / 2
+        secondLength = length - length / 2
+        while firstLength > 0 and secondLength > 0:
             if firstHead.val <= secondHead.val:
                 cur.next = firstHead
                 cur = firstHead
                 firstHead = firstHead.next
+                firstLength -= 1
             else:
                 cur.next = secondHead
                 cur = secondHead
                 secondHead = secondHead.next
-        while firstHead:
+                secondLength -= 1
+        while firstLength > 0:
             cur.next = firstHead
             cur = firstHead
             firstHead = firstHead.next
-        while secondHead:
+            firstLength -= 1
+        while secondLength > 0:
             cur.next = secondHead
             cur = secondHead
             secondHead = secondHead.next
+            secondLength -= 1
+
+        # Break the last node link.
+        cur.next = None
 
         return newHead.next
 
@@ -75,9 +81,9 @@ def main():
     node5 = ListNode(7)
 
     head.next = node2
-    node2.next = node3
-    node3.next = node4
-    node4.next = node5
+    #node2.next = node3
+    #node3.next = node4
+    #node4.next = node5
 
     h = Solution().sortList(head)
     printList(h)
