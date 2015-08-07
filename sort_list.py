@@ -12,8 +12,13 @@ class Solution:
         return self.sortListHelper(head, length)
 
     def sortListHelper(self, head, length):
+
+        # Tackle minimal situation.
         if length <= 1:
             return head
+
+        # Split current list into 2 sublists recursively,
+        # Break in the middle.
         secondHead = head
         for i in xrange(length / 2 - 1):
             secondHead = secondHead.next
@@ -21,8 +26,11 @@ class Solution:
         secondHead = secondHead.next
         tail.next = None
 
+        # Sort the two sublists separately.
         head = self.sortListHelper(head, length / 2)
         secondHead = self.sortListHelper(secondHead, length - length / 2)
+
+        # Merge the two sorted sublists.
         firstHead = head
         cur = ListNode(0)
         newHead = cur
@@ -43,6 +51,7 @@ class Solution:
             cur.next = secondHead
             cur = secondHead
             secondHead = secondHead.next
+
         return newHead.next
 
     def lengthOfList(self, head):
