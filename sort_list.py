@@ -34,6 +34,7 @@ class Solution:
         newHead = self.mergeList(head, secondHead)
         return newHead
 
+    # TODO this method is Slow! Find out why.
     def mergeList(self, firstHead, secondHead):
         cur = ListNode(0)
         newHead = cur
