@@ -74,7 +74,7 @@ int numDecodings(char *s) {
                                 else if ('6' < *(p - 1))  cur = pre;       // 789
                                 else                      cur = pre + pre; // 1-6
     }
-    else /*      3 - 9    */  { if      ('0' == *(p - 1)) return 0;
+    else    /*  3 - 9      */ { if      ('0' == *(p - 1)) return 0;  // XXX
                                 else                      cur = pre;
     }
 
@@ -83,11 +83,11 @@ int numDecodings(char *s) {
         if ('0' == *p) { if ('1' == *(p - 1) || '2' == *(p - 1))     next = pre;
                          else                                        return 0;
         }
-        else {           if      ('1' == *(p - 1))                   next = cur + pre;
-                         else if ('2' == *(p - 1)) { if ('6' < *p)   next = cur;
-                                                     else            next = cur + pre;
+        else /* 1~9 */ { if      ('1' == *(p - 1))                   next = cur + pre;
+                         else if ('2' == *(p - 1)) { if  ('6' < *p)  next = cur;
+                                                     else /* 1~6 */  next = cur + pre;
                          }
-                         else                                        next = cur;
+                         else     /* 0, 3~9 */                       next = cur;
         }
 
         pre = cur;
